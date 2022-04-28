@@ -1,88 +1,97 @@
-function numToName(num) {
-    switch (num) {
-        case 1 : 
+function selectionIdToName(id) {
+    switch (id) {
+        case 1:
             return "rock";
-        case 2 :
+        case 2:
             return "paper"
-        case 3 : 
+        case 3:
             return "scissors"
     }
 }
 
-function nameToNum(name) {
+function nameToSelectionId(name) {
     name = name.toLowerCase();
     switch (name) {
-        case "rock" : 
+        case "rock":
             return 1;;
-        case "paper" :
+        case "paper":
             return 2;
-        case "scissors" : 
+        case "scissors":
             return 3;
     }
 }
 
 function computerPlay() {
-    let num = Math.floor(Math.random() * 3) + 1;
-    return numToName(num)
+    let id = Math.floor(Math.random() * 3) + 1;
+    return selectionIdToName(id)
 }
 
-function Capitalize(s) {
-    return s.slice(0 , 1).toUpperCase() + s.slice(1)
+function capitalize(s) {
+    return s.slice(0, 1).toUpperCase() + s.slice(1)
 }
 
-function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
-    
-    playerNum = nameToNum(playerSelection);
-    computerNum = nameToNum(computerSelection)
-    
-    if (playerNum == undefined || computerNum == undefined) {
-        return undefined;
+
+//Returns 1 if player wins, -1 if player loses, 0 if draw
+function getWinner(playerSelectionId, computerSelectionId) {
+    if (playerSelectionId === computerSelectionId) {
+        return 0;
     }
-
-
-    if (playerNum === computerNum) {
-        return { res : 0 , msg : `Draw! Both players ${Capitalize(computerSelection)}` }
-    }
-
-    ///1 < 2 , 2 < 3 , 3 < 1
-
 
     let sign = 1;
-    if (playerNum > computerNum) {
-        [playerNum , computerNum] = [computerNum , playerNum]
+    if (playerSelectionId > computerSelectionId) {
+        [playerSelectionId, computerSelectionId] = [computerSelectionId, playerSelectionId]
         sign = -1;
     }
 
     let result;
-    if (playerNum == 1 && computerNum == 2) {
-        result = -1; 
+    if (playerSelectionId == 1 && computerSelectionId == 2) {
+        result = -1;
     }
-    if (playerNum == 1 && computerNum == 3) {
+    if (playerSelectionId == 1 && computerSelectionId == 3) {
         result = 1;
     }
-    if (playerNum == 2 && computerNum == 3) {
+    if (playerSelectionId == 2 && computerSelectionId == 3) {
         result = -1;
     }
 
-    result = result * sign;
+    ///the goal of sign is to reverse the result back in case we reversed the selections
+    ///at the beggining
+    return result * sign;
+}
+function playRound(playerSelection, computerSelection) {
+    playerSelection = playerSelection.toLowerCase();
 
-    let msg;
-    if (result == 1) {
-        msg = `You win! ${Capitalize(playerSelection)} beats ${Capitalize(computerSelection)}`
-    } else {
-        msg = `You lose! ${Capitalize(computerSelection)} beats ${Capitalize(playerSelection)}`
+    let playerSelectionId = nameToSelectionId(playerSelection);
+    let computerSelectionId = nameToSelectionId(computerSelection)
+
+    if (playerSelectionId == undefined || computerSelectionId == undefined) {
+        return undefined;
     }
 
-    return {res : result , msg : msg};
+
+    if (playerSelectionId === computerSelectionId) {
+        return { res: 0, msg: `Draw! Both players ${capitalize(computerSelection)}` }
+    }
+
+    let result = getWinner(playerSelectionId , computerSelectionId);
+
+    
+    let msg;
+    if (result == 1) {
+        msg = `You win! ${capitalize(playerSelection)} beats ${capitalize(computerSelection)}`
+    } else {
+        msg = `You lose! ${capitalize(computerSelection)} beats ${capitalize(playerSelection)}`
+    }
+
+    return { res: result, msg: msg };
 }
 
 function game() {
     let playerScore = 0, computerScore = 0;
-    for(let i = 0; i < 5; ) {
+    for (let i = 0; i < 5;) {
         let playerSelection = prompt("Make your choice: ");
         let computerSelection = computerPlay();
-        roundResult = playRound(playerSelection , computerSelection);
+        roundResult = playRound(playerSelection, computerSelection);
 
         if (roundResult == undefined) {
             console.log("Invalid entry, check for misspellings and try again!");
@@ -92,7 +101,7 @@ function game() {
             if (roundResult.res == 1) {
                 i++;
                 playerScore++;
-            } else if(roundResult.res == -1) {
+            } else if (roundResult.res == -1) {
                 i++;
                 computerScore++;
             }
@@ -102,7 +111,7 @@ function game() {
     }
 
     let winner = (playerScore > computerScore) ? "player" : "CPU";
-    
+
     console.log(`Game is finished, ${winner} wins!`)
 }
 
