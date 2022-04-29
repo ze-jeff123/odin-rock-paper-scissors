@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="javascript.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="javascript.js" defer></script>
 </head>
 
 
 <body>
-        
+    <div class="announcer">
+        <div class="announcer-text">
+            
+        </div>
+    </div>
+    <div class="container">
+        <button class="rock selection" data-selection="rock">Rock</button>
+        <button class="paper selection" data-selection="paper">Paper</button>
+        <button class="scissors selection" data-selection="scissors">Scissors</button>
+    </div>
+
+    <div class="score-board">
+        <div class="human-score"></div>
+        <div class="score-colon"></div>
+        <div class="cpu-score"></div>
+    </div>
 </body>
+
 </html>

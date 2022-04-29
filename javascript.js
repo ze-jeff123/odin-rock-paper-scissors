@@ -1,3 +1,6 @@
+let playerScore = 0; 
+let computerScore = 0;
+
 function selectionIdToName(id) {
     switch (id) {
         case 1:
@@ -58,7 +61,7 @@ function getWinner(playerSelectionId, computerSelectionId) {
     ///at the beggining
     return result * sign;
 }
-function playRound(playerSelection, computerSelection) {
+function getRoundResult(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
 
     let playerSelectionId = nameToSelectionId(playerSelection);
@@ -73,9 +76,9 @@ function playRound(playerSelection, computerSelection) {
         return { res: 0, msg: `Draw! Both players ${capitalize(computerSelection)}` }
     }
 
-    let result = getWinner(playerSelectionId , computerSelectionId);
+    let result = getWinner(playerSelectionId, computerSelectionId);
 
-    
+
     let msg;
     if (result == 1) {
         msg = `You win! ${capitalize(playerSelection)} beats ${capitalize(computerSelection)}`
@@ -86,36 +89,36 @@ function playRound(playerSelection, computerSelection) {
     return { res: result, msg: msg };
 }
 
-function game() {
-    let playerScore = 0, computerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("Make your choice: ");
-        let computerSelection = computerPlay();
-        roundResult = playRound(playerSelection, computerSelection);
+function displayAnnouncement(announcementText) {
+    const announcerNode = document.querySelector(".announcer");
+    announcerNode.textContent = announcementText;
+}
+function playRound(playerSelection) {
+    let computerSelection = computerPlay();
+    roundResult = getRoundResult(playerSelection, computerSelection);
 
-        if (roundResult == undefined) {
-            i--;
-            console.log("Invalid entry, check for misspellings and try again!");
-        } else {
-            console.log(`CPU played ${computerSelection}`)
-            console.log(roundResult.msg);
-            if (roundResult.res == 1) {
-                playerScore++;
-            } else if (roundResult.res == -1) {
-                computerScore++;
-            } else if ( roundResult.res == 0) {
-                ///draw
-                i--; /// get an extra turn
-            }
+    if (roundResult == undefined) {
+        displayAnnouncement("Invalid entry, check for misspellings and try again!");
+    } else {
+        let announcementText = "";
 
-            console.log(`Score: ${playerScore}(You) - ${computerScore}(CPU)`);
-        }
+        announcementText += `CPU played ${computerSelection}` + "\r\n";
+        announcementText += roundResult.msg + "\r\n";
+        if (roundResult.res == 1) {
+            playerScore++;
+        } else if (roundResult.res == -1) {
+            computerScore++;
+        } 
+
+        announcementText += `Score: ${playerScore}(You) - ${computerScore}(CPU)` + "\r\n";
+        displayAnnouncement(announcementText);
     }
-
-    let winner = (playerScore > computerScore) ? "player" : "CPU";
-
-    console.log(`Game is finished, ${winner} wins!`)
 }
 
+const buttons = document.querySelectorAll("button");
 
-
+buttons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+        playRound(button.dataset.selection);
+    })
+});

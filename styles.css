@@ -1,0 +1,30 @@
+.container {
+    display : flex;
+    background: lightgray;
+    padding : 20px;
+    justify-content: center;
+    gap : 30px;
+}
+
+.announcer {
+    background-color: #d9e7ff;
+    margin : 25px 0px;
+    border : 3px solid black;
+    justify-content: center;
+    align-items: center;
+    display : flex;
+    white-space : pre;
+    font-size : 30px;
+}
+.announcer-text {
+    font-size : 25px;
+    font-weight : bold;
+    text-align : center;
+    padding : 10px 60px;
+}
+
+.selection {
+    background-color: pink;
+    font-size : 30px;
+    padding : 10px 20px;
+}
