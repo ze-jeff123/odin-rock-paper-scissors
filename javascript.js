@@ -88,22 +88,24 @@ function playRound(playerSelection, computerSelection) {
 
 function game() {
     let playerScore = 0, computerScore = 0;
-    for (let i = 0; i < 5;) {
+    for (let i = 0; i < 5; i++) {
         let playerSelection = prompt("Make your choice: ");
         let computerSelection = computerPlay();
         roundResult = playRound(playerSelection, computerSelection);
 
         if (roundResult == undefined) {
+            i--;
             console.log("Invalid entry, check for misspellings and try again!");
         } else {
             console.log(`CPU played ${computerSelection}`)
             console.log(roundResult.msg);
             if (roundResult.res == 1) {
-                i++;
                 playerScore++;
             } else if (roundResult.res == -1) {
-                i++;
                 computerScore++;
+            } else if ( roundResult.res == 0) {
+                ///draw
+                i--; /// get an extra turn
             }
 
             console.log(`Score: ${playerScore}(You) - ${computerScore}(CPU)`);
