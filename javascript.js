@@ -1,5 +1,6 @@
-let playerScore = 0; 
+let playerScore = 0;
 let computerScore = 0;
+let gameFinished = 0;
 
 function selectionIdToName(id) {
     switch (id) {
@@ -108,9 +109,22 @@ function playRound(playerSelection) {
             playerScore++;
         } else if (roundResult.res == -1) {
             computerScore++;
-        } 
+        }
 
         announcementText += `Score: ${playerScore}(You) - ${computerScore}(CPU)` + "\r\n";
+
+        if (playerScore >= 5 || computerScore >= 5) {
+            gameFinished = 1;
+        }
+        if (gameFinished) {
+            let winner;
+            if (computerScore >= 5) {
+                winner = "CPU";
+            } else {
+                winner = "you";
+            }
+            announcementText += `\r\nGame finished! ${winner} won!`;
+        }
         displayAnnouncement(announcementText);
     }
 }
@@ -119,6 +133,8 @@ const buttons = document.querySelectorAll("button");
 
 buttons.forEach((button) => {
     button.addEventListener("click", (e) => {
-        playRound(button.dataset.selection);
+        if (!gameFinished) {
+            playRound(button.dataset.selection);
+        }
     })
 });
